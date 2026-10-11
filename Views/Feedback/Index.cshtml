@@ -1,0 +1,39 @@
+@model Feedback
+@using System.Collections.Generic
+@{
+    ViewData["Title"] = "Submit Feedback";
+    var entries = ViewBag.FeedbackEntries as List<Feedback> ?? new List<Feedback>();
+}
+<section class="hero">
+    <p class="eyebrow">YOUR VOICE MATTERS</p>
+    <h1>Feedback Management</h1>
+    <p>Help us improve by sharing your comments and rating.</p>
+</section>
+@if (TempData["SuccessMessage"] is string message)
+{
+    <div class="success-message" role="status">@message</div>
+}
+<div class="content-grid">
+    <partial name="_FeedbackForm" model="Model" />
+    <section class="entries-card">
+        <h2>Recent Feedback</h2>
+        @if (entries.Count == 0)
+        {
+            <p class="muted">No feedback submitted yet. Your response can be the first.</p>
+        }
+        else
+        {
+            @foreach (var item in entries)
+            {
+                <article class="feedback-entry">
+                    <div class="entry-heading"><strong>@item.Name</strong><span class="rating">@item.Rating / 5 ★</span></div>
+                    <p class="email">@item.Email</p>
+                    <p>@item.Comments</p>
+                </article>
+            }
+        }
+    </section>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
